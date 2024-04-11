@@ -38,7 +38,7 @@ if (isset($_GET['studentId'])) {
     // Handling form submission to update student details
     if (isset($_POST['submit'])) {
         // Checking if all required fields are filled
-        if (!empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['age']) && !empty($_POST['gender']) && !empty($_POST['email']) && !empty($_POST['phone_number']) && !empty($_POST['address'])) {
+        if (!empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['age']) && !empty($_POST['gender']) && !empty($_POST['email']) && !empty($_POST['phone_number']) && !empty($_POST['grade']) && !empty($_POST['address'])) {
             // Validating email format
             if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
                 $response = [
@@ -49,7 +49,7 @@ if (isset($_GET['studentId'])) {
                 // Updating student details in the database
                 $pdo = dbConn();
                 $stmt = $pdo->prepare('UPDATE students 
-                                        SET first_name = ?, last_name = ?, age = ?, gender = ?, email = ?, phone_number = ?, address = ?
+                                        SET first_name = ?, last_name = ?, age = ?, gender = ?, email = ?, phone_number = ?, grade = ?, address = ?
                                         WHERE student_number = ?');
                 $stmt->execute([
                     $_POST['first_name'],
@@ -58,6 +58,7 @@ if (isset($_GET['studentId'])) {
                     $_POST['gender'],
                     $_POST['email'],
                     $_POST['phone_number'],
+                    $_POST['grade'],
                     $_POST['address'],
                     $_GET['studentId']
                 ]);
@@ -148,6 +149,17 @@ if (isset($_GET['studentId'])) {
                 <div class="mb-3">
                     <label for="phone_number" class="form-label">Phone Number</label>
                     <input type="text" name="phone_number" value="<?= $student['phone_number'] ?>" class="form-control" id="phone_number">
+                </div>
+                <div class="mb-3">
+                    <label for="grade" class="form-label">Grade</label>
+                    <select class="form-select" name="grade" id="grade" aria-label="Default select example">
+                        <option selected>-- Select Grade --</option>
+                        <option value="Grade 8" <?php if ($student['grade'] == 'Grade 8') echo 'selected'; ?>>Grade 8</option>
+                        <option value="Grade 9" <?php if ($student['grade'] == 'Grade 9') echo 'selected'; ?>>Grade 9</option>
+                        <option value="Grade 10" <?php if ($student['grade'] == 'Grade 10') echo 'selected'; ?>>Grade 10</option>
+                        <option value="Grade 11" <?php if ($student['grade'] == 'Grade 11') echo 'selected'; ?>>Grade 11</option>
+                        <option value="Grade 12" <?php if ($student['grade'] == 'Grade 12') echo 'selected'; ?>>Grade 12</option>
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="address" class="form-label">Address</label>

@@ -49,6 +49,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <th scope="col">Gender</th>
                             <th scope="col">Email</th>
                             <th scope="col">Phone</th>
+                            <th scope="col">Grade</th>
                             <th scope="col">Address</th>
                             <th scope="col"></th>
                         </tr>
@@ -67,6 +68,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <td class="align-middle"><?= $student['gender'] ?></td>
                                     <td class="align-middle"><?= $student['email'] ?></td>
                                     <td class="align-middle"><?= $student['phone_number'] ?></td>
+                                    <td class="align-middle"><?= $student['grade'] ?></td>
                                     <!-- Truncating address if it exceeds maximum length -->
                                     <td class="align-middle" title="<?= $student['address'] ?>">
                                         <?php
@@ -81,10 +83,13 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </td>
                                     <!-- Links to update and delete student -->
                                     <td class="text-end align-middle text-nowrap">
-                                        <a href="update.php?studentId=<?= $student['student_number'] ?>" class="btn btn-primary py-1 px-2">
+                                        <a href="view.php?studentId=<?= $student['student_number'] ?>" title="Student Marks" class="btn btn-secondary py-1 px-2">
+                                            <i class="bi bi-percent"></i>
+                                        </a>
+                                        <a href="update.php?studentId=<?= $student['student_number'] ?>" title="Edit Student" class="btn btn-primary py-1 px-2">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <a href="delete.php?studentId=<?= $student['student_number'] ?>" class="btn btn-danger py-1 px-2">
+                                        <a href="delete.php?studentId=<?= $student['student_number'] ?>" title="Delete Student" class="btn btn-danger py-1 px-2">
                                             <i class="bi bi-trash3"></i>
                                         </a>
                                     </td>

@@ -18,7 +18,7 @@ $response = [
 // Checking if the form is submitted
 if (isset($_POST['submit'])) {
     // Checking if all required fields are filled
-    if (!empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['age']) && !empty($_POST['gender']) && !empty($_POST['email']) && !empty($_POST['phone_number']) && !empty($_POST['address'])) {
+    if (!empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['age']) && !empty($_POST['gender']) && !empty($_POST['email']) && !empty($_POST['phone_number']) && !empty($_POST['grade']) && !empty($_POST['address'])) {
         // Validating email format
         if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
             $response = [
@@ -32,7 +32,7 @@ if (isset($_POST['submit'])) {
             // Preparing and executing the insert query
             $stmt = $pdo->prepare('INSERT INTO 
                                 students (first_name, last_name, age, gender, email, phone_number, address) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?)');
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
             $stmt->execute([
                 $_POST['first_name'],
                 $_POST['last_name'],
@@ -40,6 +40,7 @@ if (isset($_POST['submit'])) {
                 $_POST['gender'],
                 $_POST['email'],
                 $_POST['phone_number'],
+                $_POST['grade'],
                 $_POST['address']
             ]);
 
@@ -119,6 +120,17 @@ if (isset($_POST['submit'])) {
                 <div class="mb-3">
                     <label for="phone_number" class="form-label">Phone Number</label>
                     <input type="text" name="phone_number" value="<?php if (isset($_POST['phone_number'])) echo $_POST['phone_number'] ?>" class="form-control" id="phone_number">
+                </div>
+                <div class="mb-3">
+                    <label for="grade" class="form-label">Grade</label>
+                    <select class="form-select" name="grade" id="grade" aria-label="Default select example">
+                        <option selected>-- Select Grade --</option>
+                        <option value="Grade 8">Grade 8</option>
+                        <option value="Grade 9">Grade 9</option>
+                        <option value="Grade 10">Grade 10</option>
+                        <option value="Grade 11">Grade 11</option>
+                        <option value="Grade 12">Grade 12</option>
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="address" class="form-label">Address</label>
