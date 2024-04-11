@@ -47,7 +47,7 @@ function template_header($title)
             </head>
             <body>
                 <!-- Navigation bar -->
-                <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
                     <div class="container">
                         <!-- Brand logo and link to home page -->
                         <a class="navbar-brand" href="index.php">
