@@ -4,15 +4,15 @@
  -->
 
 <?php
-// Including functions.php file for necessary functions (Header and Footer templates)
-include 'functions.php';
+$title = 'Home';
 ?>
-<?= template_header('Home') ?>
+
+<?php include './includes/header.php'; ?>
 <div class="container py-3 py-md-5">
     <div class="row flex-lg-row-reverse g-3 pb-5">
         <div class="col-12 col-lg-5">
             <!-- Image of a student -->
-            <img src="assets/images/student.jpg" class="d-block mx-lg-auto img-fluid" alt="Student Image" loading="lazy">
+            <img src="assets/images/student.jpg" class="d-block mx-lg-auto img-fluid rounded-3" alt="Student Image" loading="lazy">
         </div>
         <div class="col-12 col-lg-7">
             <!-- Title of the system -->
@@ -48,4 +48,4 @@ include 'functions.php';
         </div>
     </div>
 </div>
-<?= template_footer() ?>
+<?php include './includes/footer.php'; ?>

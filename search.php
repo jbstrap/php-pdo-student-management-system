@@ -1,11 +1,6 @@
-<!-- 
-    This code snippet implements a search functionality for student records based on the provided search query. 
-    It retrieves matching records from the database and displays them in a table format on the search results page.
- -->
-
 <?php
-// Including functions.php file for necessary functions
-include 'functions.php';
+$title = 'Search Students';
+include './classes/Student.php';
 
 // Initializing a count variable to store the number of search results
 $count = 0;
@@ -14,29 +9,15 @@ $count = 0;
 if (isset($_GET['query'])) {
     // Checking if the search query is not empty
     if (!empty($_GET['query'])) {
-        // Establishing a database connection
-        $conn = dbConn();
-
-        // Retrieving the search term from the URL query parameter
-        $search_term = $_GET['query'];
-
-        // Querying the database for students matching the search term
-        $stmt = $conn->query("SELECT * FROM students
-                                WHERE first_name LIKE '%$search_term%'
-                                OR last_name LIKE '%$search_term%'
-                                OR student_number LIKE '%$search_term%'
-                                ORDER BY student_number DESC
-                            ");
-
-        // Fetching all matching students from the database
-        $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Counting the number of search results
-        $count = $stmt->rowCount();
+        // Create an instance of the Student class
+        $student = new Student();
+        // Call the search method with search query parameter
+        $result = $student->searchStudents($_GET['query']);
+        $students = $result['data'];
+        $count = $result['count']; // Get count of search results
     } else {
         // Redirecting to students.php if the search query is empty
         header('Location: students.php');
-        exit;
     }
 } else {
     // Redirecting to students.php if no search query is specified
@@ -46,58 +27,66 @@ if (isset($_GET['query'])) {
     ];
     $_SESSION['message'] = $output;
     header('Location: students.php');
-    exit;
 }
 ?>
 
-<?= template_header('Search') ?>
+<?php include './includes/header.php'; ?>
 <!-- HTML content for search results page -->
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <h2 class="mt-4 mb-3">Search Results</h2>
-            <!-- Displaying the number of search results and the search query -->
-            <p>We have found <span class="fw-bold"><?= $count ?></span> record(s) for search: <span class="fw-bold"><?= $_GET['query'] ?></span></p>
-            <!-- Link to go back to the students.php page -->
-            <a href="students.php" class="fw-bold text-decoration-none">
-                <i class="bi bi-chevron-left"></i> Back
-            </a>
+            <div class="d-flex align-items-center justify-content-between mt-4 mb-3">
+                <div>
+                    <h2>Search Results</h2>
+                    <!-- Displaying the number of search results and the search query -->
+                    <p>We have found <span class="fw-bold"><?= $count ?></span> record(s) for search: <span class="fw-bold"><?= $_GET['query'] ?></span></p>
+                </div>
+                <div>
+                    <!-- Link to go back to the students.php page -->
+                    <a href="students.php" class="fw-bold text-decoration-none">
+                        <i class="bi bi-chevron-left"></i> Go Back
+                    </a>
+                </div>
+            </div>
             <div class="mt-2">
                 <!-- Displaying search results in a table -->
                 <table class="table table-striped table-hover">
                     <thead>
-                        <tr>
+                        <tr class="table-light">
                             <th scope="col">St. Number</th>
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">Age</th>
                             <th scope="col">Gender</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Address</th>
+                            <th scope="col">Enrollment Date</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if ($students) : ?>
+                        <!-- Checking if there are students available -->
+                        <?php if (!empty($students)) : ?>
+                            <!-- Looping through each student and displaying their information -->
                             <?php foreach ($students as $student) : ?>
                                 <tr>
-                                    <!-- Displaying student details in table rows -->
+                                    <!-- Displaying student details -->
                                     <th class="align-middle" scope="row"><?= $student['student_number'] ?></th>
                                     <td class="align-middle"><?= $student['first_name'] ?></td>
                                     <td class="align-middle"><?= $student['last_name'] ?></td>
                                     <td class="align-middle"><?= $student['age'] ?></td>
                                     <td class="align-middle"><?= $student['gender'] ?></td>
                                     <td class="align-middle"><?= $student['email'] ?></td>
-                                    <td class="align-middle"><?= $student['phone_number'] ?></td>
-                                    <td class="align-middle"><?= $student['address'] ?></td>
-                                    <!-- Links to update and delete student records -->
-                                    <td class="text-end align-middle">
-                                        <a href="update.php?studentId=<?= $student['student_number'] ?>" class="btn btn-primary py-1 px-2">
-                                            <i class="bi bi-pencil-square"></i>
+                                    <td class="align-middle text-nowrap"><?= $student['enrollment_date'] ?></td>
+                                    <!-- Links to update and delete student -->
+                                    <td class="text-end align-middle text-nowrap">
+                                        <a href="view-student.php?studentId=<?= $student['student_number'] ?>" title="Student Marks" class="btn btn-transparent btn-sm text-secondary">
+                                            <i class="bi bi-eye fs-5"></i>
                                         </a>
-                                        <a href="delete.php?studentId=<?= $student['student_number'] ?>" class="btn btn-danger py-1 px-2">
-                                            <i class="bi bi-trash3"></i>
+                                        <a href="update-student.php?studentId=<?= $student['student_number'] ?>" title="Edit Student" class="btn btn-transparent btn-sm text-primary">
+                                            <i class="bi bi-pencil-square fs-5"></i>
+                                        </a>
+                                        <a href="delete-student.php?studentId=<?= $student['student_number'] ?>" title="Delete Student" class="btn btn-transparent btn-sm text-danger">
+                                            <i class="bi bi-trash3 fs-5"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -114,4 +103,4 @@ if (isset($_GET['query'])) {
         </div>
     </div>
 </div>
-<?= template_footer() ?>
+<?php include './includes/footer.php'; ?>
