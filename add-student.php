@@ -1,6 +1,9 @@
 <?php
 $title = 'Add Student';
 include './classes/Student.php';
+include './classes/Course.php';
+// Create an instance of the Course class
+$courses = new Course();
 
 // Initializing an empty response array to store messages
 $response = [
@@ -89,9 +92,32 @@ if (isset($_POST['submit'])) {
                     <label for="email" class="form-label">Email</label>
                     <input type="email" name="email" value="<?php if (isset($_POST['email'])) echo $_POST['email'] ?>" class="form-control" id="email">
                 </div>
-                <div class="form-group mb-2">
+                <div class="form-group mb-3">
                     <label for="enrollment_date" class="form-label">Enrollment Date</label>
                     <input type="date" name="enrollment_date" value="<?php if (isset($_POST['enrollment_date'])) echo $_POST['enrollment_date'] ?>" class="form-control" id="enrollment_date">
+                </div>
+                <div class="row row-cols-2 gy-2">
+                    <?php foreach ($courses->getCourses() as $course) : ?>
+                        <?php
+                        $isSelected = false;
+                        if (isset($_POST['selected_courses'])) {
+                            foreach ($_POST['selected_courses'] as $selected_course) {
+                                if ($selected_course == $course['course_id']) {
+                                    $isSelected = true;
+                                    break;
+                                }
+                            }
+                        }
+                        ?>
+                        <div class="col">
+                            <div class="form-check">
+                                <input type="checkbox" name="selected_courses[]" class="form-check-input" id="course<?= $course['course_id'] ?>" value="<?= $course['course_id'] ?>" <?= $isSelected ? 'checked' : '' ?>>
+                                <label class="form-check-label" for="course<?= $course['course_id'] ?>">
+                                    <?= $course['course_number'] ?> - <?= $course['course_name'] ?>
+                                </label>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
                 <!-- Submit and cancel buttons -->
                 <div class="mt-4 d-flex gap-2">

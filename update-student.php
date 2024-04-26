@@ -1,6 +1,9 @@
 <?php
 $title = 'Update Student';
 include './classes/Student.php';
+include './classes/Course.php';
+// Create an instance of the Course class
+$courses = new Course();
 
 // Initializing an empty response array to store messages
 $response = [
@@ -115,6 +118,27 @@ if (isset($_GET['studentId'])) {
                     <div class="form-group mb-2">
                         <label for="enrollment_date" class="form-label">Enrollment Date</label>
                         <input type="date" name="enrollment_date" value="<?= $data['enrollment_date'] ?>" class="form-control" id="enrollment_date">
+                    </div>
+                    <div class="row row-cols-2 gy-2">
+                        <?php foreach ($courses->getCourses() as $course) : ?>
+                            <?php
+                            $isSelected = false;
+                            foreach ($data['courses'] as $selected_course) {
+                                if ($selected_course['course_id'] == $course['course_id']) {
+                                    $isSelected = true;
+                                    break;
+                                }
+                            }
+                            ?>
+                            <div class="col">
+                                <div class="form-check">
+                                    <input type="checkbox" name="selected_courses[]" class="form-check-input" id="course<?= $course['course_id'] ?>" value="<?= $course['course_id'] ?>" <?= $isSelected ? 'checked' : '' ?>>
+                                    <label class="form-check-label" for="course<?= $course['course_id'] ?>">
+                                        <?= $course['course_number'] ?> - <?= $course['course_name'] ?>
+                                    </label>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                     <!-- Submit and cancel buttons -->
                     <div class="mt-4 d-flex gap-2">

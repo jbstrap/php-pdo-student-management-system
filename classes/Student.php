@@ -65,7 +65,8 @@ class Student extends DB
 
             // Fetch the courses for the student
             $coursesStmt = $this->conn->prepare(
-                "SELECT course_name, credits
+                "SELECT c.course_name, c.credits,
+                c.course_id
             FROM enrollments e
             JOIN courses c ON c.course_id = e.course_id
             WHERE e.student_number = ?"
@@ -118,13 +119,19 @@ class Student extends DB
                 VALUES (?, ?, ?, ?, ?, ?)"
             );
             $stmt->execute([$first_name, $last_name, $age, $gender, $email, $enrollment_date]);
-            if ($stmt) {
-                $this->output = 'success';
-                return $this->output;
-            } else {
-                $this->output = 'Student was not added. Please try again!';
-                return $this->output;
+            $student_number = $this->conn->lastInsertId();
+            // Insert courses student enrolled in
+            if (!empty($data['selected_courses'])) {
+                foreach ($data['selected_courses'] as $course) {
+                    $stmtCourse = $this->conn->prepare(
+                        "INSERT INTO enrollments (student_number , course_id)
+                    VALUES (?, ?)"
+                    );
+                    $stmtCourse->execute([$student_number, $course]);
+                }
             }
+            $this->output = 'success';
+            return $this->output;
         } catch (PDOException $e) {
             $this->output = $e->getMessage();
             return $this->output;
@@ -168,13 +175,20 @@ class Student extends DB
                 WHERE student_number = ?"
             );
             $stmt->execute([$first_name, $last_name, $age, $gender, $email, $enrollment_date, $student_number]);
-            if ($stmt) {
-                $this->output = 'success';
-                return $this->output;
-            } else {
-                $this->output = 'Student was not updated. Please try again!';
-                return $this->output;
+            // Insert courses student enrolled in
+            if (!empty($data['selected_courses'])) {
+                $delStmt = $this->conn->prepare("DELETE FROM enrollments WHERE student_number = ?");
+                $delStmt->execute([$student_number]);
+                foreach ($data['selected_courses'] as $course) {
+                    $stmtCourse = $this->conn->prepare(
+                        "INSERT INTO enrollments (student_number , course_id)
+                    VALUES (?, ?)"
+                    );
+                    $stmtCourse->execute([$student_number, $course]);
+                }
             }
+            $this->output = 'success';
+            return $this->output;
         } catch (PDOException $e) {
             $this->output = $e->getMessage();
             return $this->output;
@@ -193,13 +207,8 @@ class Student extends DB
             // Delete the student
             $stmt = $this->conn->prepare("DELETE FROM students WHERE student_number = ?");
             $stmt->execute([$id]);
-            if ($stmt) {
-                $output = 'success';
-                return $output;
-            } else {
-                $output = 'Student was not deleted. Please try again!';
-                return $output;
-            }
+            $output = 'success';
+            return $output;
         } catch (PDOException $e) {
             $this->output = $e->getMessage();
             return $this->output;

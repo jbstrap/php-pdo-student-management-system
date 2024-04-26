@@ -50,13 +50,22 @@ $page = basename(substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?= $page == 'courses' ? ' active' : '' ?>" href="courses.php">Courses</a>
+                        <a class="nav-link<?= $page == 'courses' ? ' active' : '' ?>" href="courses.php">
+                            <i class="bi bi-book"></i>
+                            Courses
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?= $page == 'instructors' ? ' active' : '' ?>" href="instructors.php">Instructors</a>
+                        <a class="nav-link<?= $page == 'instructors' ? ' active' : '' ?>" href="instructors.php">
+                            <i class="bi bi-person"></i>
+                            Instructors
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?= $page == 'departments' ? ' active' : '' ?>" href="departments.php">Departments</a>
+                        <a class="nav-link<?= $page == 'departments' ? ' active' : '' ?>" href="departments.php">
+                            <i class="bi bi-building"></i>
+                            Departments
+                        </a>
                     </li>
                 </ul>
                 <!-- Search form -->

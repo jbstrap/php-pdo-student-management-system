@@ -162,7 +162,6 @@ class Instructor extends DB
             $first_name = $this->clean_input($data['first_name']);
             $last_name = $this->clean_input($data['last_name']);
             $email = $this->clean_input($data['email']);
-            $selected_courses = $data['selected_courses'];
 
             // Check for empty fields
             if (empty($first_name) || empty($last_name) || empty($email)) {
@@ -184,10 +183,12 @@ class Instructor extends DB
             $stmt->execute([$first_name, $last_name, $email]);
             $instructor_id = $this->conn->lastInsertId();
 
-            // Update courses taught by the instructor
-            foreach ($selected_courses as $course) {
-                $stmtCourse = $this->conn->prepare("UPDATE courses SET instructor_id = ? WHERE course_number = ?");
-                $stmtCourse->execute([$instructor_id, $course]);
+            if (!empty($data['selected_courses'])) {
+                // Update courses taught by the instructor
+                foreach ($data['selected_courses'] as $course) {
+                    $stmtCourse = $this->conn->prepare("UPDATE courses SET instructor_id = ? WHERE course_number = ?");
+                    $stmtCourse->execute([$instructor_id, $course]);
+                }
             }
 
             $this->output = 'success';
@@ -211,7 +212,6 @@ class Instructor extends DB
             $first_name = $this->clean_input($data['first_name']);
             $last_name = $this->clean_input($data['last_name']);
             $email = $this->clean_input($data['email']);
-            $selected_courses = $data['selected_courses'];
             $instructor_id = $data['instructor_id'];
 
             // Check for empty fields
@@ -235,9 +235,13 @@ class Instructor extends DB
             $stmt->execute([$first_name, $last_name, $email, $instructor_id]);
 
             // Update courses taught by the instructor
-            foreach ($selected_courses as $course) {
-                $stmtCourse = $this->conn->prepare("UPDATE courses SET instructor_id = ? WHERE course_number = ?");
-                $stmtCourse->execute([$instructor_id, $course]);
+            if (!empty($data['selected_courses'])) {
+                $delStmt = $this->conn->prepare("UPDATE courses SET instructor_id = NULL WHERE instructor_id = ?");
+                $delStmt->execute([$instructor_id]);
+                foreach ($data['selected_courses'] as $course) {
+                    $stmtCourse = $this->conn->prepare("UPDATE courses SET instructor_id = ? WHERE course_number = ?");
+                    $stmtCourse->execute([$instructor_id, $course]);
+                }
             }
 
             $this->output = 'success';

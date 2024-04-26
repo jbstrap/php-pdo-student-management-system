@@ -29,7 +29,7 @@ class Course extends DB
     {
         try {
             $stmt = $this->conn->prepare(
-                "SELECT c.course_number, c.course_name, c.credits,
+                "SELECT c.course_id, c.course_number, c.course_name, c.credits,
                         d.department_name
                 FROM courses c
                 LEFT JOIN departments d

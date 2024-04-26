@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 25, 2024 at 05:26 PM
+-- Generation Time: Apr 25, 2024 at 09:56 PM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.8
 
@@ -71,7 +71,8 @@ CREATE TABLE `departments` (
 INSERT INTO `departments` (`department_id`, `department_name`, `salary`, `start_date`, `instructor_id`, `created_at`, `updated_at`) VALUES
 (1, 'Mathematics', 49500.00, '2024-04-30', 2, '2024-04-24 12:50:29', '2024-04-25 13:59:32'),
 (2, 'Databases', 46000.00, '2024-05-08', 1, '2024-04-24 12:50:29', '2024-04-25 13:59:06'),
-(3, 'Programming', 50000.00, '2024-04-27', 1, '2024-04-24 13:22:08', '2024-04-25 13:58:28');
+(3, 'Programming', 50000.00, '2024-04-27', 1, '2024-04-24 13:22:08', '2024-04-25 13:58:28'),
+(5, 'Arts', 29000.00, '2024-04-30', 10, '2024-04-25 19:38:12', '2024-04-25 19:38:12');
 
 -- --------------------------------------------------------
 
@@ -92,13 +93,20 @@ CREATE TABLE `enrollments` (
 --
 
 INSERT INTO `enrollments` (`enrollment_id`, `student_number`, `course_id`, `created_at`, `updated_at`) VALUES
-(6, 20240422223317, 3, '2024-04-22 20:33:17', '2024-04-23 21:40:33'),
 (7, 20240424162957, 2, '2024-04-24 18:09:52', '2024-04-24 18:09:52'),
 (8, 20240424162957, 1, '2024-04-24 18:09:52', '2024-04-24 18:09:52'),
 (9, 20240424162957, 3, '2024-04-24 18:09:52', '2024-04-24 18:09:52'),
 (10, 20240424162957, 4, '2024-04-24 18:09:52', '2024-04-24 18:09:52'),
-(11, 20240424142606, 1, '2024-04-24 18:10:23', '2024-04-24 18:10:23'),
-(12, 20240424142606, 4, '2024-04-24 18:10:23', '2024-04-24 18:10:23');
+(19, 20240425203332, 4, '2024-04-25 18:33:33', '2024-04-25 18:33:33'),
+(20, 20240425203332, 3, '2024-04-25 18:33:33', '2024-04-25 18:33:33'),
+(21, 20240425203439, 4, '2024-04-25 18:34:39', '2024-04-25 18:34:39'),
+(22, 20240425203439, 3, '2024-04-25 18:34:39', '2024-04-25 18:34:39'),
+(23, 20240425203439, 2, '2024-04-25 18:34:39', '2024-04-25 18:34:39'),
+(24, 20240425203439, 1, '2024-04-25 18:34:39', '2024-04-25 18:34:39'),
+(40, 20240425204756, 4, '2024-04-25 19:34:35', '2024-04-25 19:34:35'),
+(41, 20240425204756, 1, '2024-04-25 19:34:35', '2024-04-25 19:34:35'),
+(42, 20240424142606, 4, '2024-04-25 19:34:59', '2024-04-25 19:34:59'),
+(43, 20240424142606, 1, '2024-04-25 19:34:59', '2024-04-25 19:34:59');
 
 -- --------------------------------------------------------
 
@@ -113,13 +121,6 @@ CREATE TABLE `grades` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `grades`
---
-
-INSERT INTO `grades` (`grade_id`, `enrollment_id`, `grade`, `created_at`, `updated_at`) VALUES
-(3, 6, '31.00', '2024-04-23 21:45:09', '2024-04-23 21:49:26');
 
 -- --------------------------------------------------------
 
@@ -171,10 +172,14 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`student_number`, `first_name`, `last_name`, `age`, `gender`, `email`, `enrollment_date`, `created_at`, `updated_at`) VALUES
-(20240422223317, 'Jayme', 'Woodward', 51, 'Other', 'suwicihuke@mailinator.com', '2024-04-24', '2024-04-22 20:33:17', '2024-04-24 11:13:20'),
-(20240424142606, 'Mollie', 'Morris', 5, 'Male', 'barype@mailinator.com', '2024-04-23', '2024-04-24 12:26:06', '2024-04-24 12:29:22'),
+(20240424142606, 'Mollie', 'Morris', 25, 'Male', 'barype@mailinator.com', '2024-04-23', '2024-04-24 12:26:06', '2024-04-25 19:34:59'),
 (20240424162957, 'Kotli', 'Karabo', 25, 'Male', 'email@email.com', '2024-04-24', '2024-04-24 14:29:57', '2024-04-24 14:29:57'),
-(20240424193242, 'Hanna', 'Maxwell', 36, 'Female', 'hozoqofebi@mailinator.com', '2024-04-23', '2024-04-24 17:32:42', '2024-04-24 17:42:07');
+(20240424193242, 'Hanna', 'Maxwell', 36, 'Female', 'hozoqofebi@mailinator.com', '2024-04-23', '2024-04-24 17:32:42', '2024-04-24 17:42:07'),
+(20240425200331, 'Colton', 'Mcgee', 44, 'Male', 'bomiqy@mailinator.com', '2024-04-25', '2024-04-25 18:03:31', '2024-04-25 18:03:31'),
+(20240425200517, 'Arden', 'Whitney', 18, 'Other', 'sosuh@mailinator.com', '2022-04-29', '2024-04-25 18:05:17', '2024-04-25 18:05:17'),
+(20240425203332, 'Virginia', 'Turner', 80, 'Male', 'taniriboqu@mailinator.com', '1979-10-18', '2024-04-25 18:33:32', '2024-04-25 18:33:32'),
+(20240425203439, 'Molly', 'Warren', 18, 'Female', 'senenyxaj@mailinator.com', '2013-06-30', '2024-04-25 18:34:39', '2024-04-25 18:34:39'),
+(20240425204756, 'Jordan', 'Douglas', 20, 'Male', 'mewuli@mailinator.com', '1981-02-08', '2024-04-25 18:47:56', '2024-04-25 19:34:35');
 
 --
 -- Triggers `students`
@@ -241,37 +246,37 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `departments`
 --
 ALTER TABLE `departments`
-  MODIFY `department_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `department_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `enrollments`
 --
 ALTER TABLE `enrollments`
-  MODIFY `enrollment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `enrollment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `grades`
 --
 ALTER TABLE `grades`
-  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `instructors`
 --
 ALTER TABLE `instructors`
-  MODIFY `instructor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `instructor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `student_number` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20240424193243;
+  MODIFY `student_number` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20240425213605;
 
 --
 -- Constraints for dumped tables
@@ -282,7 +287,7 @@ ALTER TABLE `students`
 --
 ALTER TABLE `courses`
   ADD CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`instructor_id`) REFERENCES `instructors` (`instructor_id`),
-  ADD CONSTRAINT `courses_ibfk_2` FOREIGN KEY (`department_id`) REFERENCES `departments` (`department_id`);
+  ADD CONSTRAINT `courses_ibfk_2` FOREIGN KEY (`department_id`) REFERENCES `departments` (`department_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `departments`
@@ -295,7 +300,7 @@ ALTER TABLE `departments`
 --
 ALTER TABLE `enrollments`
   ADD CONSTRAINT `enrollments_ibfk_1` FOREIGN KEY (`student_number`) REFERENCES `students` (`student_number`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `enrollments_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`);
+  ADD CONSTRAINT `enrollments_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `grades`

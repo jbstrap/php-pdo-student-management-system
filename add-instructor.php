@@ -63,9 +63,20 @@ if (isset($_POST['submit'])) {
                 </div>
                 <div class="row row-cols-2 gy-2">
                     <?php foreach ($courses->getCourses() as $course) : ?>
+                        <?php
+                        $isSelected = false;
+                        if (isset($_POST['selected_courses'])) {
+                            foreach ($_POST['selected_courses'] as $selected_course) {
+                                if ($selected_course == $course['course_number']) {
+                                    $isSelected = true;
+                                    break;
+                                }
+                            }
+                        }
+                        ?>
                         <div class="col">
                             <div class="form-check">
-                                <input type="checkbox" name="selected_courses[]" class="form-check-input" id="course<?= $course['course_number'] ?>" value="<?= $course['course_number'] ?>">
+                                <input type="checkbox" name="selected_courses[]" class="form-check-input" id="course<?= $course['course_number'] ?>" value="<?= $course['course_number'] ?>" <?= $isSelected ? 'checked' : '' ?>>
                                 <label class="form-check-label" for="course<?= $course['course_number'] ?>">
                                     <?= $course['course_number'] ?> - <?= $course['course_name'] ?>
                                 </label>
