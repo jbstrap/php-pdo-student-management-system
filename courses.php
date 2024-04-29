@@ -11,6 +11,18 @@
 <?php
 // Setting the page title and including the Course class
 $title = 'Courses';
+include './classes/User.php';
+$user = new User();
+
+if (!$user->isLoggedIn()) {
+    $_SESSION['message'] = [
+        'message' => 'You must be logged in to access that page!',
+        'messageType' => 'danger',
+    ];
+    header("Location: index.php?redirectUrl=students");
+    exit();
+}
+
 include_once './classes/Course.php';
 $courses = new Course();
 ?>

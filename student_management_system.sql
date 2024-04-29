@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 25, 2024 at 09:56 PM
+-- Generation Time: Apr 29, 2024 at 05:00 PM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.8
 
@@ -43,10 +43,10 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`course_id`, `course_number`, `course_name`, `credits`, `instructor_id`, `department_id`, `created_at`, `updated_at`) VALUES
-(1, 3000, 'Calculus', 3, 11, 1, '2024-04-23 19:42:06', '2024-04-25 12:56:15'),
-(2, 3001, 'C++', 5, 11, 3, '2024-04-23 19:42:06', '2024-04-25 12:56:15'),
-(3, 3002, 'MongoDB', 4, 11, 2, '2024-04-23 19:42:59', '2024-04-25 08:27:11'),
-(4, 3003, 'MySQL Database', 4, 10, 2, '2024-04-23 19:42:59', '2024-04-25 08:27:24');
+(1, 3000, 'Calculus', 3, 10, 1, '2024-04-23 19:42:06', '2024-04-26 06:11:14'),
+(2, 3001, 'C++', 5, 1, 3, '2024-04-23 19:42:06', '2024-04-26 06:11:40'),
+(3, 3002, 'MongoDB', 4, 12, 2, '2024-04-23 19:42:59', '2024-04-26 06:10:33'),
+(4, 3003, 'MySQL Database', 4, 11, 2, '2024-04-23 19:42:59', '2024-04-26 06:11:06');
 
 -- --------------------------------------------------------
 
@@ -122,6 +122,14 @@ CREATE TABLE `grades` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `grades`
+--
+
+INSERT INTO `grades` (`grade_id`, `enrollment_id`, `grade`, `created_at`, `updated_at`) VALUES
+(4, 7, '60.00', '2024-04-29 14:52:08', '2024-04-29 14:52:08'),
+(5, 9, '80.00', '2024-04-29 14:52:08', '2024-04-29 14:52:08');
+
 -- --------------------------------------------------------
 
 --
@@ -147,7 +155,8 @@ INSERT INTO `instructors` (`instructor_id`, `first_name`, `last_name`, `email`, 
 (3, 'Kane', 'Parrish', 'sofu@mailinator.com', '2024-04-24 15:45:04', '2024-04-24 15:45:04'),
 (4, 'Ali', 'Baird', 'kifu@mailinator.com', '2024-04-24 20:04:53', '2024-04-24 20:04:53'),
 (10, 'Solomon', 'Holloway', 'sakicogara@mailinator.com', '2024-04-25 07:01:54', '2024-04-25 08:24:40'),
-(11, 'Iliana', 'Nunez', 'cate@mailinator.com', '2024-04-25 08:27:11', '2024-04-25 08:27:11');
+(11, 'Iliana', 'Nunez', 'cate@mailinator.com', '2024-04-25 08:27:11', '2024-04-25 08:27:11'),
+(12, 'Jackson', 'Mckay', 'cytirog@mailinator.com', '2024-04-26 05:59:37', '2024-04-26 05:59:37');
 
 -- --------------------------------------------------------
 
@@ -190,6 +199,28 @@ CREATE TRIGGER `set_student_number` BEFORE INSERT ON `students` FOR EACH ROW BEG
 END
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(256) NOT NULL,
+  `email` varchar(256) NOT NULL,
+  `password` text NOT NULL,
+  `role` varchar(10) NOT NULL DEFAULT 'Student'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`) VALUES
+(2, 'Masana', 'masana@email.com', '$2y$10$4sjAOtEljsyeay2JRhh05e2AfOSwsmx9dO4n0VVXe5wiO3e9Xxpey', 'Student'),
+(3, 'Kotli', 'admin@admin.com', '$2y$10$ydGmOesO.Vn1bylkL/zkHu5INgyKgWBJl7hHJw5P.vKn3SORTi/D2', 'Admin');
 
 --
 -- Indexes for dumped tables
@@ -239,6 +270,13 @@ ALTER TABLE `students`
   ADD PRIMARY KEY (`student_number`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_email` (`email`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -264,19 +302,25 @@ ALTER TABLE `enrollments`
 -- AUTO_INCREMENT for table `grades`
 --
 ALTER TABLE `grades`
-  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `instructors`
 --
 ALTER TABLE `instructors`
-  MODIFY `instructor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `instructor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
   MODIFY `student_number` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20240425213605;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables

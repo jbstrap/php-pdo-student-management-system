@@ -13,6 +13,18 @@
 <?php
 // Setting the page title and including necessary classes
 $title = 'Update Course';
+include './classes/User.php';
+$user = new User();
+
+if (!$user->isLoggedIn()) {
+    $_SESSION['message'] = [
+        'message' => 'You must be logged in to access that page!',
+        'messageType' => 'danger',
+    ];
+    header("Location: index.php?redirectUrl=students");
+    exit();
+}
+
 include './classes/Course.php';
 include './classes/Department.php';
 // Create an instance of the Department class

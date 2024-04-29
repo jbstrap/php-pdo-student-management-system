@@ -1,51 +1,83 @@
-<!-- 
-    This code represents the homepage of a Student Management System. 
-    I've added comments to describe each section, including the system's title, description, and functionalities.
- -->
-
 <?php
-$title = 'Home';
+$title = 'Login';
+include './classes/User.php';
+$user = new User();
+
+if ($user->isLoggedIn()) {
+    $_SESSION['message'] = [
+        'message' => 'You\'re already logged in!',
+        'messageType' => 'success'
+    ];
+    header("Location: students.php");
+}
+
+// Initializing an empty response array to store messages
+$response = [
+    'message' => '',
+    'messageType' => ''
+];
+
+// Checking if the form is submitted
+if (isset($_POST['submit'])) {
+    $redirectUrl = isset($_GET['redirectUrl']) ? $_GET['redirectUrl'] . '.php' : 'students.php';
+    $output = $user->login($_POST);
+    if ($output == 'success') {
+        $output = [
+            'message' => 'Logged in successfully!',
+            'messageType' => 'success'
+        ];
+        $_SESSION['message'] = $output;
+        header('Location: ' . $redirectUrl);
+    }
+    $response = [
+        'message' => $output,
+        'messageType' => 'danger'
+    ];
+}
 ?>
 
 <?php include './includes/header.php'; ?>
-<div class="container py-3 py-md-5">
-    <div class="row flex-lg-row-reverse g-3 pb-5">
-        <div class="col-12 col-lg-5">
-            <!-- Image of a student -->
-            <img src="assets/images/student.jpg" class="d-block mx-lg-auto img-fluid rounded-3" alt="Student Image" loading="lazy">
-        </div>
-        <div class="col-12 col-lg-7">
-            <!-- Title of the system -->
-            <h2 class="text-body-emphasis">Student Management System</h2>
-            <hr>
-            <div class="mt-4 lead">
-                <p>
-                    <!-- Description of the Student CRUD system -->
-                    A Student CRUD (Create, Read, Update, Delete) PHP system is a basic web application designed to
-                    manage student records. Here's a simple description of how it works:
-                </p>
-
-                <ul>
-                    <li><span class="fw-bold">Create:</span> Users can input information about a new student such as their name, age, gender, and other relevant details into a form. Upon submission, this information is stored in a database.</li>
-                    <li><span class="fw-bold">Read:</span> Users can view a list of all students currently in the system. This typically involves displaying a table with each student's information retrieved from the database.</li>
-                    <li><span class="fw-bold">Update:</span> Users can modify the details of an existing student. This functionality allows for editing information like the student's name, age, or any other relevant data.</li>
-                    <li><span class="fw-bold">Delete:</span> Users can remove a student from the system entirely. This action deletes the student's record from the database.</li>
-                </ul>
-
-                <p>
-                    <!-- Explanation of system components -->
-                    The system typically consists of several PHP scripts and a database. The PHP scripts handle user requests, interact with the database to perform CRUD operations,
-                    and generate HTML content to be displayed in the user's web browser.
-                    The database stores student records in a structured format, allowing for efficient storage and retrieval of information.
-                </p>
-
-                <p>
-                    <!-- Conclusion of the system's functionality -->
-                    Overall, a Student CRUD PHP system provides a straightforward way to manage student records, enabling users to create,
-                    view, update, and delete student information through a web interface.
-                </p>
-            </div>
-        </div>
+<main class="form-signin w-100 m-auto">
+    <div class="text-center">
+        <img class="my-3 border rounded-circle p-3" src="./assets/images/student-50.png" alt="" width="100" height="100">
+        <h1 class="h3 mb-4 fw-normal">Please sign in</h1>
     </div>
-</div>
+    <?php if ($response['message']) : ?>
+        <div class="alert alert-<?php echo $response['messageType'] ?> alert-dismissible fade show mb-4" role="alert">
+            <i class="bi bi-x-circle me-2"></i>
+            <?= $response['message'] ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <!-- Displaying session message if set -->
+    <?php if (isset($_SESSION['message'])) : ?>
+        <div class="alert alert-<?php echo $_SESSION['message']['messageType'] ?> alert-dismissible fade show" role="alert">
+            <i class="bi bi-<?= $_SESSION['message']['messageType'] == 'success' ? 'circle' : 'x' ?>-circle me-2"></i>
+            <?= $_SESSION['message']['message'] ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+    <?php unset($_SESSION['message']); ?>
+
+    <form action="" method="post" novalidate>
+        <div class="form-floating">
+            <input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+        </div>
+
+        <div class="form-check text-start my-3">
+            <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                Remember me
+            </label>
+        </div>
+        <button class="btn btn-primary w-100 py-2" type="submit" name="submit">Sign in</button>
+        <p class="mt-5 mb-3 text-body-secondary text-center">© 2024</p>
+    </form>
+</main>
 <?php include './includes/footer.php'; ?>

@@ -1,5 +1,17 @@
 <?php
 $title = 'Search Students';
+include './classes/User.php';
+$user = new User();
+
+if (!$user->isLoggedIn()) {
+    $_SESSION['message'] = [
+        'message' => 'You must be logged in to access that page!',
+        'messageType' => 'danger',
+    ];
+    header("Location: index.php?redirectUrl=students");
+    exit();
+}
+
 include './classes/Student.php';
 
 // Initializing a count variable to store the number of search results

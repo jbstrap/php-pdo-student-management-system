@@ -1,5 +1,17 @@
 <?php
 $title = 'Delete Instructor';
+include './classes/User.php';
+$user = new User();
+
+if (!$user->isLoggedIn()) {
+    $_SESSION['message'] = [
+        'message' => 'You must be logged in to access that page!',
+        'messageType' => 'danger',
+    ];
+    header("Location: index.php?redirectUrl=students");
+    exit();
+}
+
 include './classes/Instructor.php';
 
 // Initializing an empty response array to store messages

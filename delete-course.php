@@ -12,6 +12,18 @@
 <?php
 // Setting the page title and including the Course class
 $title = 'Delete Course';
+include './classes/User.php';
+$user = new User();
+
+if (!$user->isLoggedIn()) {
+    $_SESSION['message'] = [
+        'message' => 'You must be logged in to access that page!',
+        'messageType' => 'danger',
+    ];
+    header("Location: index.php?redirectUrl=students");
+    exit();
+}
+
 include './classes/Course.php';
 
 // Initializing an empty response array to store messages

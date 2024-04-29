@@ -1,5 +1,11 @@
 <?php
 $page = basename(substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '.')));
+
+$user = new User();
+
+if (isset($_GET['action']) && $_GET['action'] == 'logout') {
+    $user->logout();
+}
 ?>
 
 <!DOCTYPE html>
@@ -15,9 +21,9 @@ $page = basename(substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '
     <link rel="icon" type="image/x-icon" href="./assets/images/favicon.png">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="./assets/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="./assets/css/styles.css" type="text/css">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="./assets/bootstrap-icons/bootstrap-icons.css" type="text/css">
+    <link rel="stylesheet" href="./assets/css/styles.css" type="text/css">
 </head>
 
 <body>
@@ -38,33 +44,44 @@ $page = basename(substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '
                     <!-- Home page link -->
                     <li class="nav-item">
                         <a class="nav-link<?= $page == 'index' ? ' active' : '' ?>" href="index.php">
-                            <i class="bi bi-house"></i>
+                            <i class="bi bi-house text-danger"></i>
                             Home
                         </a>
                     </li>
                     <!-- Students page link -->
                     <li class="nav-item">
                         <a class="nav-link<?= $page == 'students' ? ' active' : '' ?>" href="students.php">
-                            <i class="bi bi-people"></i>
+                            <i class="bi bi-people text-danger"></i>
                             Students
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link<?= $page == 'courses' ? ' active' : '' ?>" href="courses.php">
-                            <i class="bi bi-book"></i>
+                            <i class="bi bi-book text-danger"></i>
                             Courses
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link<?= $page == 'instructors' ? ' active' : '' ?>" href="instructors.php">
-                            <i class="bi bi-person"></i>
+                            <i class="bi bi-person text-danger"></i>
                             Instructors
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link<?= $page == 'departments' ? ' active' : '' ?>" href="departments.php">
-                            <i class="bi bi-building"></i>
+                            <i class="bi bi-building text-danger"></i>
                             Departments
+                        </a>
+                    </li>
+                </ul>
+                <!-- <span class="me-3">
+                    Welcome <?= isset($_SESSION['isLogged']) ? $_SESSION['username'] : 'Guest' ?>
+                </span> -->
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a href="?action=logout" class="nav-link">
+                            <i class="bi bi-person-fill-lock text-danger"></i>
+                            Logout
                         </a>
                     </li>
                 </ul>
